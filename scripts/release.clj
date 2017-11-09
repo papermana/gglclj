@@ -7,5 +7,6 @@
     {:output-to "release/gglclj.js"
      :output-dir "release"
      :optimizations :advanced
-     :verbose true})
+     :verbose true
+     :target :nodejs})
   (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds"))

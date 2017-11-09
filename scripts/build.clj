@@ -7,7 +7,8 @@
     {:main 'gglclj.core
      :output-to "out/gglclj.js"
      :output-dir "out"
-     :verbose true})
+     :verbose true
+     :target :nodejs})
   (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds"))
 
 
