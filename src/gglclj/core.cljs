@@ -1,9 +1,8 @@
 (ns gglclj.core
   (:require [clojure.string :as string]
-            [cljs.nodejs :as node]))
-
-(def os (node/require "os"))
-(def child_process (node/require "child_process"))
+            [cljs.nodejs :as node]
+            os
+            [child_process :refer [spawn]]))
 
 (node/enable-util-print!)
 
@@ -28,10 +27,10 @@
 
 (defn open
   [func query]
-  (let [command (if (= (.platform os) "darwin")
+  (let [command (if (= (os/platform) "darwin")
                   "open"
                   "xdg-open")]
-    (.spawn child_process command #js[(func query)])))
+    (spawn command #js[(func query)])))
 
 (defn print-help!
   []
