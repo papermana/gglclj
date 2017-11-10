@@ -26,6 +26,8 @@
    "-g" :github, "--git" :github, "--github" :github
    "--google" :google})
 
+(def default-engine :google)
+
 (defn open
   [func query]
   (let [command (if (= (os/platform) "darwin")
@@ -79,20 +81,36 @@
           (fs/readFileSync "utf-8")
           read-string))))
 
+(defn get-default-engine
+  [config]
+  (or (:default-engine config) default-engine))
+
 (defn perform-search!
-  [flag query]
-  (let [config (get-config)]
-    (-> flag
-        (get-search-engine config)
+  [query & [flag]]
+  (let [config (get-config)
+        engine (if flag
+                 (get-search-engine flag config)
+                 (get-default-engine))]
+    (-> engine
         (get-search-template config)
         parse-search-template
         make-build-query-func
         (open query))))
 
+(defn flag?
+  [word]
+  (re-find #"^--?[^-]*$" word))
+
 (defn -main
-  [flag & query]
-  (cond (and (not flag) (not query)) (print-help!)
-        (help-flag? flag) (print-help!)
-        :else (perform-search! flag query)))
+  ([]
+   (print-help!))
+  ([flag-or-query]
+   (if (flag? flag-or-query)
+     (print-help!)
+     (perform-search! (list flag-or-query))))
+  ([flag-or-query & query]
+   (cond (help-flag? flag-or-query) (print-help!)
+         (flag? flag-or-query) (perform-search! query flag-or-query)
+         :else (perform-search! (conj query flag-or-query)))))
 
 (set! *main-cli-fn* -main)
