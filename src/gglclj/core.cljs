@@ -6,17 +6,33 @@
 
 (node/enable-util-print!)
 
-(defn get-search-func
+(defn open
+  [func query]
+  (let [command (if (= (os/platform) "darwin")
+                  "open"
+                  "xdg-open")]
+    ;; spawn must be passed a JS array of arguments, not a vector
+    (spawn command #js[(func query)])))
+
+(defn make-build-query-func
+  [{:keys [prefix separator postfix]}]
+  (fn [query]
+    (str prefix
+         (string/join separator query)
+         postfix)))
+
+(defn parse-search-template
+  [template]
+  (let [[_ prefix separator postfix]
+        (re-find #"(https?://.*),,search,,(.*),,query,,(.*)" template)]
+    {:prefix prefix, :separator separator, :postfix postfix}))
+
+(defn get-search-template
   [engine]
   (case engine
-    :images #(str "https://www.google.com/search?q="
-                  (string/join "%20" %)
-                  "&tbm=isch")
-    :youtube #(str "https://www.youtube.com/results?search_query=\""
-                   (string/join "%20" %)
-                   "\"")
-    :stackoverflow #(str "http://stackoverflow.com/search?q="
-                         (string/join "+" %))))
+    :images "https://www.google.com/search?q=,,search,,%20,,query,,&tbm=isch"
+    :youtube "https://www.youtube.com/results?search_query=\",,search,,%20,,query,,\""
+    :stackoverflow "http://stackoverflow.com/search?q=,,search,,+,,query,,"))
 
 (defn get-search-engine
   [flag]
@@ -24,13 +40,6 @@
     ("-i" "--images") :images
     ("-y" "--youtube") :youtube
     ("-s" "--stack" "--stackoverflow") :stackoverflow))
-
-(defn open
-  [func query]
-  (let [command (if (= (os/platform) "darwin")
-                  "open"
-                  "xdg-open")]
-    (spawn command #js[(func query)])))
 
 (defn print-help!
   []
@@ -48,9 +57,9 @@
         (help-flag? flag) (print-help!)
         :else (-> flag
                   get-search-engine
-                  get-search-func
+                  get-search-template
+                  parse-search-template
+                  make-build-query-func
                   (open query))))
 
 (set! *main-cli-fn* -main)
-
-
