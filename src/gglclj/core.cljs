@@ -11,12 +11,20 @@
 (def default-search-engines
   {:images "https://www.google.com/search?q=,,search,,%20,,query,,&tbm=isch"
    :youtube "https://www.youtube.com/results?search_query=\",,search,,%20,,query,,\""
-   :stackoverflow "http://stackoverflow.com/search?q=,,search,,+,,query,,"})
+   :stackoverflow "http://stackoverflow.com/search?q=,,search,,+,,query,,"
+   :ddg "https://duckduckgo.com/?q=,,search,,%20,,query,,"
+   :wiki "http://www.wikipedia.org/w/index.php?search=,,search,,+,,query,,"
+   :github "http://github.com/search?q=,,search,,+,,query,,"
+   :google "https://www.google.com/search?q=,,search,,%20,,query,,"})
 
 (def default-flags
   {"-i" :images, "--images" :images
    "-y" :youtube, "--youtube" :youtube
-   "-s" :stackoverflow, "--stack" :stackoverflow, "--stackoverflow" :stackoverflow})
+   "-s" :stackoverflow, "--stack" :stackoverflow, "--stackoverflow" :stackoverflow
+   "-d" :ddg, "--ddg" :ddg, "--duckduckgo" :ddg
+   "-w" :wiki, "--wiki" :wiki, "--wikipedia" :wiki
+   "-g" :github, "--git" :github, "--github" :github
+   "--google" :google})
 
 (defn open
   [func query]
