@@ -1,6 +1,6 @@
-(defproject gglclj "0.1.0-SNAPSHOT"
-  :description "FIXME: write this!"
-  :url "http://example.com/FIXME"
+(defproject gglclj "1.0.0"
+  :description "Google from your terminal"
+  :url "https://github.com/papermana/gglclj"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.946"]]
   :jvm-opts ^:replace ["-Xmx1g" "-server"]
