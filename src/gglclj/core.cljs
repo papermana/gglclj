@@ -9,13 +9,13 @@
 (node/enable-util-print!)
 
 (def default-search-engines
-  {:images "https://www.google.com/search?q=,,search,,%20,,query,,&tbm=isch"
-   :youtube "https://www.youtube.com/results?search_query=\",,search,,%20,,query,,\""
-   :stackoverflow "http://stackoverflow.com/search?q=,,search,,+,,query,,"
-   :ddg "https://duckduckgo.com/?q=,,search,,%20,,query,,"
-   :wiki "http://www.wikipedia.org/w/index.php?search=,,search,,+,,query,,"
-   :github "http://github.com/search?q=,,search,,+,,query,,"
-   :google "https://www.google.com/search?q=,,search,,%20,,query,,"})
+  {:images "https://www.google.com/search?q=<search>%20<query>&tbm=isch"
+   :youtube "https://www.youtube.com/results?search_query=\"<search>%20<query>\""
+   :stackoverflow "http://stackoverflow.com/search?q=<search>+<query>"
+   :ddg "https://duckduckgo.com/?q=<search>%20<query>"
+   :wiki "http://www.wikipedia.org/w/index.php?search=<search>+<query>"
+   :github "http://github.com/search?q=<search>+<query>"
+   :google "https://www.google.com/search?q=<search>%20<query>"})
 
 (def default-flags
   {"-i" :images, "--images" :images
@@ -46,7 +46,7 @@
 (defn parse-search-template
   [template]
   (let [[_ prefix separator postfix]
-        (re-find #"(https?://.*),,search,,(.*),,query,,(.*)" template)]
+        (re-find #"(https?://.*)<search>(.*)<query>(.*)" template)]
     {:prefix prefix, :separator separator, :postfix postfix}))
 
 (defn get-search-template
