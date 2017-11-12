@@ -99,7 +99,7 @@
 
 (defn flag?
   [word]
-  (re-find #"^--?[^-]*$" word))
+  (re-find #"^--?[^-]+$" word))
 
 (defn -main
   ([]
