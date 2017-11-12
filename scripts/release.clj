@@ -6,7 +6,10 @@
   (b/build "src"
     {:output-to "release/gglclj.js"
      :output-dir "release"
-     :optimizations :advanced
+     :optimizations :simple
+     :optimize-constants true
+     :static-fns true
+     :pretty-print false
      :verbose true
      :target :nodejs})
   (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds"))
