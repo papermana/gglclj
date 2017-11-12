@@ -118,7 +118,7 @@ Example config:
   (let [config (get-config)
         engine (if flag
                  (get-search-engine flag config)
-                 (get-default-engine))]
+                 (get-default-engine config))]
     (-> engine
         (get-search-template config)
         parse-search-template
