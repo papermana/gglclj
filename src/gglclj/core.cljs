@@ -61,7 +61,35 @@
 
 (defn print-help!
   []
-  (println "Pass a flag and then a query"))
+  (println "Usage:
+
+gglclj [query]
+gglclj --google [query]
+gglclj -i/--images [query]
+gglclj -y/--youtube [query]
+gglclj -s/--stack/--stackoverflow [query]
+gglclj -w/--wiki/--wikipedia [query]
+gglclj -d/--ddg/--duckduckgo [query]
+gglclj -g/--git/--github [query]
+
+gglclj -h/--help
+
+You can provide your own config by creating a ~/.gglcljrc file. It
+should contain an EDN map which can have keys :search-engines, :flags,
+and :default-engine. :search-engines is a map that takes engine
+identifiers (as keywords) and matches then to search templates. :flags
+is a map that takes command-line options as strings and matches them
+to engine identifiers. :default-engine is a single engine identifier.
+
+Search templates are regular URL but where the search query should go,
+there should be a string \"<search><query>\". Anything that appears
+between the placeholders, e.g. \"%20\" or \"+\", will be consider to
+be a separator to be placed between the words in your query.
+
+Example config:
+{:search-engines {:my-search \"https://my-search.com?q=<search>%20<query>\"}
+ :flags {\"-m\" :my-search}
+ :default-engine :my-search}"))
 
 (defn help-flag?
   [flag]
